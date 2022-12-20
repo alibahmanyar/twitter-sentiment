@@ -1,6 +1,9 @@
 glove/
 datasets/
 tmp*
+logs/
+objects/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

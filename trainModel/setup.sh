@@ -1,5 +1,7 @@
 pip3 install -r requirements.txt
 
+mkdir -p objects
+
 dataset_url=http://cs.stanford.edu/people/alecmgo/trainingandtestdata.zip
 wget $dataset_url -c -P datasets
 cd datasets
