@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import pickle
 
-VOCAB_SIZE = 300_000  # Full vocab for 1.6M dataset contains 850061 tokens
+VOCAB_SIZE = 80_000  # Full vocab for 1.6M dataset contains 850061 tokens
 
 path_to_glove_file = "glove/glove.txt"
 path_to_dataset = "datasets/train.csv"
@@ -37,7 +37,7 @@ with open(path_to_glove_file) as f:
 
 
 num_tokens = len(vocab)
-embedding_dim = 200
+embedding_dim = 50
 hits = 0
 misses = 0
 

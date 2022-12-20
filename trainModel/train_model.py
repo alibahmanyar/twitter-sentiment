@@ -8,7 +8,7 @@ import datetime
 import pickle
 
 
-EPOCHS = 20
+EPOCHS = 40
 
 path_to_glove_file = "glove/glove.txt"
 path_to_dataset = "datasets/train.csv"

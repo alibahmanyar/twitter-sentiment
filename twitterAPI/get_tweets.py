@@ -13,7 +13,7 @@ from requests_oauthlib import OAuth1Session
 with open("keys.json", 'r') as f:
     token = json.loads(f.read())['bearer']
 
-model_path = '../trainModel/tmp/checkpoint/10-0.78'
+model_path = '../trainModel/tmp/checkpoint/final'
 model = keras.models.load_model(model_path)
 
 search_url = "https://api.twitter.com/2/tweets/search/recent"
@@ -26,4 +26,3 @@ tweets = [x['text'] for x in r.json()['data']]
 
 for t in tweets:
     print(f'{t}\t{model.predict([t])}')
-
