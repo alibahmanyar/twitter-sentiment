@@ -12,7 +12,7 @@ path_to_dataset = "datasets/train.csv"
 path_to_objects = "objects"
 
 df = pd.read_csv(path_to_dataset, encoding = "ISO-8859-1", names=['polarity', 'id', 'query', 'user', 'text'], index_col=2)
-df = df.sample(frac=1)[:300] # Shuffle and truncate
+df = df.sample(frac=1)[:] # Shuffle and truncate
 
 # We train the encoder with all the data (test data is in a separate file so we won't have leakage, but it's still debatable...)
 train_data = df['text'].to_numpy()
@@ -65,9 +65,6 @@ embedding_layer = tf.keras.layers.Embedding(
 )
 
 # Serializing generated objects with pickle
-with open(f'{path_to_objects}/embedding_matrix.pickle', 'wb') as f:
-    pickle.dump(embedding_matrix, f)
-
 with open(f'{path_to_objects}/embedding_layer.pickle', 'wb') as f:
     pickle.dump(embedding_layer, f)
 

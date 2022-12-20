@@ -2,13 +2,13 @@
 import tensorflow as tf
 from tensorflow import keras
 from sklearn.model_selection import train_test_split
-import numpy as np
 import pandas as pd
+import numpy as np
 import datetime
 import pickle
 
 
-EPOCHS = 30
+EPOCHS = 20
 
 path_to_glove_file = "glove/glove.txt"
 path_to_dataset = "datasets/train.csv"
@@ -20,7 +20,7 @@ checkpoint_filepath = 'tmp/checkpoint'
 
 def load_dataset():
     df = pd.read_csv(path_to_dataset, encoding = "ISO-8859-1", names=['polarity', 'id', 'query', 'user', 'text'], index_col=2)
-    df = df.sample(frac=1)[:30_000] # shuffle and truncate
+    df = df.sample(frac=1)[:60_000] # shuffle and truncate
     df['polarity'] = df['polarity'].apply(lambda x: 1 if x == 4 else 0)
 
     tdf, vdf = train_test_split(df, test_size=0.2)
@@ -69,19 +69,26 @@ def train_model(model, train_data, train_label, val_data, val_label):
         filepath=checkpoint_filepath+"/{epoch:02d}-{val_accuracy:.2f}",
         monitor='val_accuracy',
         mode='max',
+        save_freq='epoch',
+        period=5,
         save_best_only=True)
 
 
     history = model.fit(x=train_data, y=train_label, validation_data=(val_data, val_label), epochs=EPOCHS, 
                     callbacks=[tensorboard_callback, model_checkpoint_callback, backup_callback])
 
+    return history
+
 def main():
     train_data, train_label, val_data, val_label = load_dataset()
     encoder, embedding_layer = load_encoder()
 
     model = build_model(encoder, embedding_layer)
-
     train_model(model, train_data, train_label, val_data, val_label)
+    model.save(f"{checkpoint_filepath}/final")
+    print(model.predict(np.array(["Shit!", "Oh fuck!", "You'd better shut up!", "I wanna kill this bastard", "That was amazing", "OMG!"
+                        "That was cute", "Nice one", "I loved it", "I really liked how he behaved", "He was a nice dude"])))
+
     
 
 if __name__ == '__main__':
