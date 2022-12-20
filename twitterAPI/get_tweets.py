@@ -1,14 +1,8 @@
 #! /bin/python3
-import tensorflow as tf
 from tensorflow import keras
-from sklearn.model_selection import train_test_split
-import numpy as np
-import pandas as pd
-import datetime
 import json
-import pickle
 import requests
-from requests_oauthlib import OAuth1Session
+
 
 with open("keys.json", 'r') as f:
     token = json.loads(f.read())['bearer']
