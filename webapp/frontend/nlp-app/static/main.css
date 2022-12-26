@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css?family=Kalam:400,700|Comfortaa|Raleway|Special+Elite|Yeon+Sung|Roboto:300,400,900|Shadows+Into+Light|Amatic+SC:700|Pacifico&display=swap');
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+body {
+  background-color: rgb(22, 22, 22);
+  font-size: 70%;
+  height: 100%;
+  margin: 1%;
+}
+html{
+  height: 100%;
+}
+
+.container{
+  margin: 0 auto;
+  position: relative;
+}
+
+.vbox{
+  display: flex;
+  flex-direction: column;
+}
+.margin_lr{
+  margin-left: 2vw;
+  margin-right: 2vw;
+}
+.s_btn{
+  overflow: hidden;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  background-color: rgba(0,0,0,0);
+  padding: 0;
+}
+.margin_top_10{
+  margin-top: 10vh;
+}
+.margin_top_7{
+  margin-top: 7vh;
+}
+.margin_top_3{
+  margin-top: 3vh;
+}
+.center{
+  text-align: center;
+}
+.full_height{
+  height: 88vh;
+}
+.full_height_p{
+  height: 100%;
+}
+
+
+.btn0{
+  font-family: "Raleway";
+  font-size: 1.5em;
+  background-color: rgb(40, 175, 228);
+  color: white;
+  padding: 1vh 0 1vh 0;
+  margin-top: 2.5vh;
+  border-radius: 1vh;
+  margin-bottom: 2.5vh;
+  box-shadow: 0px 7px 7px 0px rgba(0, 0, 0, 0.5);
+}
+.btn0:hover{
+    background-color: rgb(27, 157, 209);
+
+}
+.btn0:active{
+    background-color: rgb(21, 83, 107);
+}
+
+.back_btn{
+  position: absolute;
+  top:0;
+  left: 0;
+  font-size: 3em;
+  color: white;
+}
+
+.form_label{
+  font-family: "Raleway";
+  font-size: 1.2em;
+  margin-right: 5mm;
+  color: white;
+  margin-bottom: 1vh;
+  text-align: center;
+}
+.form_input{
+  font-family: "Raleway";
+  font-size: 1.2em;
+  margin-bottom: 3vh;
+  border-radius: 4px;
+  text-decoration: none;
+  border: none;
+  padding: 6px;
+  box-shadow: 0px 6px 7px 0px rgba(0, 0, 0, 0.5);
+}
+.form_input:focus {
+  box-shadow: 0px 0px 13px 4px rgba(255, 255, 255, 0.5);
+}
+
+.text0{
+  text-align: center;
+  overflow: hidden;
+  font-family: 'Comfortaa';
+  text-decoration: none;
+  font-size: 2em;
+  color: white;
+  margin-bottom: 1.5vh;
+}
+.text1{
+  text-align: center;
+  overflow: hidden;
+  font-family: 'Comfortaa';
+  text-decoration: none;
+  font-size: 5em;
+  font-family: 'Special Elite';
+  color: #ceffe4;
+  margin-bottom: 1vh;
+}
+.text2{
+  text-align: center;
+  overflow: hidden;
+  font-family: 'Comfortaa';
+  text-decoration: none;
+  font-size: 1.2em;
+  color: white;
+  margin-bottom: 6vh;
+}
+
+
+
+
+
+@media only screen and (min-width: 768px) {
+  .container{
+     width: 660px;
+  }
+  body {
+    font-size: 1vmax;
+    height: 100%;
+    margin: 1%;
+    overflow: hidden;
+  }
+  .margin_lr{
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
