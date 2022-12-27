@@ -4,7 +4,7 @@ services:
     build: ./nginx
     restart: always
     ports:
-      - "8080:80"
+      - "127.0.0.1:50080:80"
     logging:
       options:
         max-size: 100m
@@ -13,7 +13,7 @@ services:
     build: ./backend
     restart: always
     ports:
-      - "5000:5000"
+      - "127.0.0.1:50081:5000"
     logging:
       options:
         max-size: 100m
