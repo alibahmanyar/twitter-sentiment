@@ -21,7 +21,7 @@ def upload_media():
     return jsonify({
         "status": 0,
         "msg": "success",
-        "result": str(model.predict([text])[0][0])
+        "result": float(model.predict([text])[0][0])
     })
 
 if __name__ == '__main__':
