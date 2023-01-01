@@ -8,7 +8,8 @@ import datetime
 import pickle
 
 
-EPOCHS = 40
+EPOCHS = 80
+BATCH_SIZE = 128
 
 path_to_glove_file = "glove/glove.txt"
 path_to_dataset = "datasets/train.csv"
@@ -20,10 +21,10 @@ checkpoint_filepath = 'tmp/checkpoint'
 
 def load_dataset():
     df = pd.read_csv(path_to_dataset, encoding = "ISO-8859-1", names=['polarity', 'id', 'query', 'user', 'text'], index_col=2)
-    df = df.sample(frac=1)[:60_000] # shuffle and truncate
+    df = df.sample(frac=1)[:] # shuffle and truncate
     df['polarity'] = df['polarity'].apply(lambda x: 1 if x == 4 else 0)
 
-    tdf, vdf = train_test_split(df, test_size=0.2)
+    tdf, vdf = train_test_split(df, test_size=0.02)
     train_data = tdf['text'].to_numpy()
     train_label = tdf['polarity'].to_numpy()
 
@@ -59,6 +60,8 @@ def build_model(encoder, embedding_layer):
 
 
 def train_model(model, train_data, train_label, val_data, val_label):
+    # model = keras.models.load_model(checkpoint_filepath+"/05-0.79") # continue from previodly 
+
     model.compile(loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
               optimizer=tf.keras.optimizers.Adam(1e-4),
               metrics=['accuracy'])
@@ -70,11 +73,10 @@ def train_model(model, train_data, train_label, val_data, val_label):
         monitor='val_accuracy',
         mode='max',
         save_freq='epoch',
-        period=5,
+        period=1,
         save_best_only=True)
 
-
-    history = model.fit(x=train_data, y=train_label, validation_data=(val_data, val_label), epochs=EPOCHS, 
+    history = model.fit(x=train_data, y=train_label, validation_data=(val_data, val_label), epochs=EPOCHS, batch_size=BATCH_SIZE,
                     callbacks=[tensorboard_callback, model_checkpoint_callback, backup_callback])
 
     return history
