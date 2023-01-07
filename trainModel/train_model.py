@@ -52,6 +52,8 @@ def build_model(encoder, embedding_layer):
     model = tf.keras.Sequential([
         encoder,
         embedding_layer,
+        tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64, return_sequences=True)),
+        tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64, return_sequences=True)),
         tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64)),
         tf.keras.layers.Dense(64, activation='relu'),
         tf.keras.layers.Dense(1)
