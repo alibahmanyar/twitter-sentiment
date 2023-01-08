@@ -11,7 +11,7 @@ EPOCHS = 30
 BATCH_SIZE = 128
 
 train_dataset = "datasets/split/train.csv"
-validation_dataset = "datasets/split/train.csv"
+validation_dataset = "datasets/split/validation.csv"
 
 log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 checkpoint_filepath = 'tmp/checkpoint'
@@ -21,6 +21,8 @@ def load_dataset():
     tdf = pd.read_csv(train_dataset)
     vdf = pd.read_csv(validation_dataset)
     
+    print("train,val lengths:", len(tdf), len(vdf))
+
     train_data = tdf['text'].to_numpy()
     train_label = tdf['polarity'].to_numpy()
 

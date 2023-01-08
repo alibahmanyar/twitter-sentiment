@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 DATASET = "datasets/train.csv"
-DATASET_LEN = 180_000
+DATASET_LEN = 600_000
 SPLIT = 0.2
 
 if __name__ == '__main__':
