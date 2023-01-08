@@ -45,7 +45,9 @@ def build_model(encoder):
             output_dim=64,
             mask_zero=True),
         tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64)),
+        tf.keras.layers.Dropout(0.3),
         tf.keras.layers.Dense(64, activation='relu'),
+        tf.keras.layers.Dropout(0.2),
         tf.keras.layers.Dense(1)
     ])
     return model
