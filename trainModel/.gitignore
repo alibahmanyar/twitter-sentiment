@@ -5,6 +5,8 @@ logs/
 objects/
 keys
 *.tar.gz
+*.log
+*.service
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
