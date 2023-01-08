@@ -21,4 +21,4 @@ if __name__ == '__main__':
     tdf, vdf = train_test_split(df, test_size=SPLIT)
     
     tdf.to_csv("datasets/split/train.csv")
-    tdf.to_csv("datasets/split/validation.csv")
+    vdf.to_csv("datasets/split/validation.csv")
