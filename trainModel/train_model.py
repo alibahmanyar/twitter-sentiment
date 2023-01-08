@@ -7,24 +7,22 @@ import numpy as np
 import datetime
 import pickle
 
+VOCAB_SIZE = 80_000  # full vocab for 1.6M dataset contains 850061 tokens
 
-EPOCHS = 80
+EPOCHS = 30
 BATCH_SIZE = 128
 
-path_to_glove_file = "glove/glove.txt"
-path_to_dataset = "datasets/train.csv"
-path_to_objects = "objects"
+train_dataset = "datasets/split/train.csv"
+validation_dataset = "datasets/split/train.csv"
 
 log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 checkpoint_filepath = 'tmp/checkpoint'
 
 
 def load_dataset():
-    df = pd.read_csv(path_to_dataset, encoding = "ISO-8859-1", names=['polarity', 'id', 'query', 'user', 'text'], index_col=2)
-    df = df.sample(frac=1)[:] # shuffle and truncate
-    df['polarity'] = df['polarity'].apply(lambda x: 1 if x == 4 else 0)
-
-    tdf, vdf = train_test_split(df, test_size=0.02)
+    tdf = pd.read_csv(train_dataset)
+    vdf = pd.read_csv(validation_dataset)
+    
     train_data = tdf['text'].to_numpy()
     train_label = tdf['polarity'].to_numpy()
 
@@ -34,26 +32,18 @@ def load_dataset():
     return train_data, train_label, val_data, val_label
 
 
-def load_encoder():
-    with open(f'{path_to_objects}/embedding_layer.pickle', 'rb') as f:
-        embedding_layer = pickle.load(f)
-    
-    with open(f'{path_to_objects}/encoder.pickle', 'rb') as f:
-        from_disk = pickle.load(f)
-        encoder = tf.keras.layers.TextVectorization.from_config(from_disk['config'])
-        # You have to call `adapt` with some dummy data (BUG in Keras)
-        encoder.adapt(tf.data.Dataset.from_tensor_slices(["xyz"]))
-        encoder.set_weights(from_disk['weights'])
-    
-    return encoder, embedding_layer
+def build_encoder(train_data):
+    encoder = tf.keras.layers.TextVectorization(max_tokens=VOCAB_SIZE, output_sequence_length=64)
+    encoder.adapt(train_data)
+    return encoder
 
-
-def build_model(encoder, embedding_layer):
+def build_model(encoder):
     model = tf.keras.Sequential([
         encoder,
-        embedding_layer,
-        tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64, return_sequences=True)),
-        tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64, return_sequences=True)),
+        tf.keras.layers.Embedding(
+            input_dim=len(encoder.get_vocabulary()),
+            output_dim=64,
+            mask_zero=True),
         tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64)),
         tf.keras.layers.Dense(64, activation='relu'),
         tf.keras.layers.Dense(1)
@@ -62,7 +52,7 @@ def build_model(encoder, embedding_layer):
 
 
 def train_model(model, train_data, train_label, val_data, val_label):
-    # model = keras.models.load_model(checkpoint_filepath+"/05-0.79") # continue from previodly 
+    # model = keras.models.load_model(checkpoint_filepath+"/05-0.79") # continue from previously trained model 
 
     model.compile(loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
               optimizer=tf.keras.optimizers.Adam(1e-4),
@@ -85,10 +75,11 @@ def train_model(model, train_data, train_label, val_data, val_label):
 
 def main():
     train_data, train_label, val_data, val_label = load_dataset()
-    encoder, embedding_layer = load_encoder()
 
-    model = build_model(encoder, embedding_layer)
+    encoder = build_encoder(train_data)
+    model = build_model(encoder)
     train_model(model, train_data, train_label, val_data, val_label)
+
     model.save(f"{checkpoint_filepath}/final")
     print(model.predict(np.array(["Shit!", "Oh fuck!", "You'd better shut up!", "I wanna kill this bastard", "That was amazing", "OMG!"
                         "That was cute", "Nice one", "I loved it", "I really liked how he behaved", "He was a nice dude"])))
