@@ -1,6 +1,6 @@
 <script lang="ts">
-    // const API_URL = "https://nlp.decagon.ir/api/"
-    const API_URL = "http://127.0.0.1:5000/"
+    const API_URL = "https://nlp.decagon.ir/api/"
+    // const API_URL = "http://127.0.0.1:5000/"
 
     let text_input: string ="";
     let result: any = 1;
