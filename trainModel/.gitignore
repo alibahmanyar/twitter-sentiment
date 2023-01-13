@@ -7,6 +7,9 @@ keys
 *.tar.gz
 *.log
 *.service
+tests/
+
+test_model_tmp.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
