@@ -1,5 +1,6 @@
 <script lang="ts">
-    const API_URL = "https://nlp.decagon.ir/api/"
+    // const API_URL = "https://nlp.decagon.ir/api/"
+    const API_URL = "http://127.0.0.1:5000/"
 
     let text_input: string ="";
     let result: any = 1;
@@ -9,10 +10,9 @@
             return;
         state = 1;
         
-        let response = await fetch(API_URL + "predict?text=" + text_input)
+        let response = await fetch(API_URL + "get_tweets?search_term=" + text_input)
         result = (await response.json()).result;
-        result = result.toFixed(2);
-        state = 2;
+        state = 2
     }
 </script>
 
@@ -27,12 +27,12 @@
 
     <body>
         <div class="container">
-            <a class="link" href='/tweets'>See recent tweets!</a>
+            <a class="link" href='/'>Main page</a>
             <div class="vbox margin_lr">
-                <div class="margin_top_7"></div>
+                <div class="margin_top_3"></div>
                 <form class="center vbox" on:submit={analyze} id="form1">
                     <label for="text_input" class="form_label">
-                        Enter sample text:
+                        Enter query term:
                     </label>
                     <input class="form_input" type="text" name="text_input" bind:value={text_input}/>
                 </form>
@@ -40,12 +40,20 @@
                     <div class="text1 margin_top_2">Analyzing...</div>
                     <div class="lds-ripple"><div></div><div></div></div>
                 {:else if state === 2}
-                    <div class="text0 margin_top_5">Analysis score: {result}</div>
+                    <div class="text0">Most recent tweets:</div>
+                    <div style="height: 60vh; overflow-y: scroll;">
+                        {#each result as { text, score }, i}
+                            <li>
+                                <div class="text1">{text}<br>Score: {score}</div>
+                            </li>
+                        {/each}
+                    </div>
+                    
                 {:else}
                     <div class="margin_top_13"></div>
                 {/if}
             </div>
-            <button type="submit" form="form1" class="s_btn btn0">Analyse!</button>
+            <button type="submit" form="form1" class="s_btn btn1">Get tweets and analyze them!</button>
         </div>
     
     </body>
