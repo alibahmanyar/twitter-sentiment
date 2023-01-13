@@ -37,15 +37,23 @@
                     <input class="form_input" type="text" name="text_input" bind:value={text_input}/>
                 </form>
                 {#if state === 1}
-                    <div class="text1 margin_top_2">Analyzing...</div>
+                    <div class="text1 margin_top_2" style="font-size: 1.8em;">Retrieving tweets...</div>
                     <div class="lds-ripple"><div></div><div></div></div>
                 {:else if state === 2}
-                    <div class="text0">Most recent tweets:</div>
+                    <div class="text1" style="font-size: 1.6em;">Most recent tweets:</div>
                     <div style="height: 60vh; overflow-y: scroll;">
                         {#each result as { text, score }, i}
-                            <li>
-                                <div class="text1">{text}<br>Score: {score}</div>
-                            </li>
+                            
+                            <div class="text1">
+                                {text}
+                                <br>
+                                {#if score > 0.5}
+                                    <span style="color:teal;">Score: {score}</span>
+                                {:else}
+                                    <span style="color:firebrick;">Score: {score}</span>
+                                {/if}
+                            </div>
+                            
                         {/each}
                     </div>
                     
