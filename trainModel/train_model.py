@@ -7,7 +7,7 @@ import datetime
 
 VOCAB_SIZE = 80_000  # full vocab for 1.6M dataset contains 850061 tokens
 
-EPOCHS = 30
+EPOCHS = 40
 BATCH_SIZE = 128
 
 train_dataset = "datasets/split/train.csv"
@@ -33,7 +33,7 @@ def load_dataset():
 
 
 def build_encoder(train_data):
-    encoder = tf.keras.layers.TextVectorization(max_tokens=VOCAB_SIZE, output_sequence_length=64)
+    encoder = tf.keras.layers.TextVectorization(max_tokens=VOCAB_SIZE)
     encoder.adapt(train_data)
     return encoder
 
@@ -47,7 +47,7 @@ def build_model(encoder):
         tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64, kernel_regularizer=tf.keras.regularizers.L2(0.01))),
         tf.keras.layers.Dropout(0.33),
         tf.keras.layers.Dense(64, kernel_regularizer=tf.keras.regularizers.L2(0.01), activation='relu'),
-        tf.keras.layers.Dropout(0.25),
+        tf.keras.layers.Dropout(0.33),
         tf.keras.layers.Dense(1)
     ])
     return model
@@ -56,7 +56,7 @@ def build_model(encoder):
 def train_model(model, train_data, train_label, val_data, val_label):
     # model = keras.models.load_model(checkpoint_filepath+"/05-0.79") # continue from previously trained model 
 
-    model.compile(loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
+    model.compile(loss=tf.keras.losses.MeanAbsoluteError(),
               optimizer=tf.keras.optimizers.Adam(1e-4),
               metrics=['accuracy'])
 
@@ -67,7 +67,7 @@ def train_model(model, train_data, train_label, val_data, val_label):
         monitor='val_accuracy',
         mode='max',
         save_freq='epoch',
-        period=1,
+        period=10,
         save_best_only=True)
 
     history = model.fit(x=train_data, y=train_label, validation_data=(val_data, val_label), epochs=EPOCHS, batch_size=BATCH_SIZE,
