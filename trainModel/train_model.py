@@ -45,7 +45,7 @@ def build_model(encoder):
             output_dim=64,
             mask_zero=True),
         tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64, kernel_regularizer=tf.keras.regularizers.L2(0.01))),
-        tf.keras.layers.Dropout(0.33),
+        # tf.keras.layers.Dropout(0.33),
         tf.keras.layers.Dense(64, kernel_regularizer=tf.keras.regularizers.L2(0.01), activation='relu'),
         tf.keras.layers.Dropout(0.33),
         tf.keras.layers.Dense(1)
@@ -56,7 +56,7 @@ def build_model(encoder):
 def train_model(model, train_data, train_label, val_data, val_label):
     # model = keras.models.load_model(checkpoint_filepath+"/05-0.79") # continue from previously trained model 
 
-    model.compile(loss=tf.keras.losses.MeanAbsoluteError(),
+    model.compile(loss=tf.keras.losses.BinaryCrossentropy(),
               optimizer=tf.keras.optimizers.Adam(1e-4),
               metrics=['accuracy'])
 
@@ -83,8 +83,6 @@ def main():
     train_model(model, train_data, train_label, val_data, val_label)
 
     model.save(f"{checkpoint_filepath}/final")
-    print(model.predict(np.array(["Shit!", "Oh fuck!", "You'd better shut up!", "I wanna kill this bastard", "That was amazing", "OMG!"
-                        "That was cute", "Nice one", "I loved it", "I really liked how he behaved", "He was a nice dude"])))
 
     
 
