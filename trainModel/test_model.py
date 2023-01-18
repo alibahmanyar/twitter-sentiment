@@ -29,10 +29,6 @@ model = keras.models.load_model(f"{checkpoint_filepath}")
 
 print(model.summary())
 
-print("\n\nSamples:")
-print(model.predict(np.array(["Shit!", "Oh fuck!", "You'd better shut up!", "I wanna kill this bastard", "That was amazing", "OMG!"
-                        "That was cute", "Nice one", "I loved it", "I really liked how he behaved", "He was a nice dude"]), verbose=0))
-
 
 
 print("\n\nSentiment 140:")

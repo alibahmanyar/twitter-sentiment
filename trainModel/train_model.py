@@ -83,8 +83,6 @@ def main():
     train_model(model, train_data, train_label, val_data, val_label)
 
     model.save(f"{checkpoint_filepath}/final")
-    print(model.predict(np.array(["Shit!", "Oh fuck!", "You'd better shut up!", "I wanna kill this bastard", "That was amazing", "OMG!"
-                        "That was cute", "Nice one", "I loved it", "I really liked how he behaved", "He was a nice dude"])))
 
     
 
